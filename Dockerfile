@@ -5,15 +5,6 @@
 FROM alpine
 LABEL maintainer="kev <noreply@datageek.info>, Sah <contact@leesah.name>"
 
-ENV SERVER_ADDR 0.0.0.0
-ENV SERVER_PORT 443
-ENV PASSWORD=
-ENV METHOD      aes-128-gcm
-ENV TIMEOUT     300
-ENV DNS_ADDRS    8.8.8.8,8.8.4.4
-ENV ARGS=
-
-COPY . /tmp/repo
 RUN set -ex \
  # Build environment setup
  && apk add --no-cache --virtual .build-deps \
@@ -28,8 +19,11 @@ RUN set -ex \
       linux-headers \
       mbedtls-dev \
       pcre-dev \
+      git \
  # Build & install
- && cd /tmp/repo \
+ && git clone --depth=1 https://github.com/shadowsocks/shadowsocks-libev.git /tmp/libev \
+ && cd /tmp/libev \
+ && git submodule update --init --recursive \
  && ./autogen.sh \
  && ./configure --prefix=/usr --disable-documentation \
  && make install \
@@ -37,14 +31,17 @@ RUN set -ex \
  && apk del .build-deps \
  # Runtime dependencies setup
  && apk add --no-cache \
+      tzdata \
       ca-certificates \
       rng-tools \
       $(scanelf --needed --nobanner /usr/bin/ss-* \
       | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
       | sort -u) \
- && rm -rf /tmp/repo
+ && cd /
+ && rm -rf /tmp/*
 
-USER nobody
+VOLUME /etc/shadowsocks-libev
+ENV TZ=Asia/Shanghai
 
 CMD exec /usr/local/bin/ss-server -v \
       -c /etc/shadowsocks-libev/config.json \
