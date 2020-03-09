@@ -50,7 +50,7 @@ RUN set -ex \
 VOLUME /etc/shadowsocks-libev
 ENV TZ=Asia/Shanghai
 
-CMD exec /usr/local/bin/ss-server -v \
+CMD exec /usr/bin/ss-server -v \
       -c /etc/shadowsocks-libev/config.json \
       -f /var/run/shadowsocks-libev.pid \
-      && nginx -g 'deamon off;'
+      && nginx -g 'daemon off;'
