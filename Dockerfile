@@ -40,17 +40,15 @@ RUN set -ex \
            | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
            | sort -u) \
       && mkdir -p /etc/shadowsocks-libev \
-      && wget --no-check-certificate -O /etc/shadowsocks-libev/config.json https://raw.githubusercontent.com/xzl2021/shadowsocks_libev-obfs-nginx/master/files/config.json \
+      && wget --no-check-certificate -O /files/config.json https://raw.githubusercontent.com/xzl2021/shadowsocks_libev-obfs-nginx/master/files/config.json \
       && wget --no-check-certificate -O /etc/nginx/conf.d/obfs.conf https://raw.githubusercontent.com/xzl2021/shadowsocks_libev-obfs-nginx/master/files/obfs_nginx.conf \
       && wget --no-check-certificate -O /usr/local/bin/obfs-server https://raw.githubusercontent.com/xzl2021/shadowsocks_libev-obfs-nginx/master/files/obfs-server \
-      && chmod +x /usr/local/bin/obfs-server \
+      && wget --no-check-certificate -O /files/start.sh https://raw.githubusercontent.com/xzl2021/shadowsocks_libev-obfs-nginx/master/files/start.sh \
+      && chmod +x /usr/local/bin/obfs-server /files/start.sh \
       && cd / \
       && rm -rf /tmp/*
 
 VOLUME /etc/shadowsocks-libev
 ENV TZ=Asia/Shanghai
 
-CMD exec /usr/bin/ss-server -v \
-      -c /etc/shadowsocks-libev/config.json \
-      -f /var/run/shadowsocks-libev.pid \
-      && nginx -g 'daemon off;'
+CMD ["/files/start.sh"]
