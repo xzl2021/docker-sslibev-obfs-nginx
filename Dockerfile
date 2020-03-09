@@ -39,6 +39,7 @@ RUN set -ex \
            $(scanelf --needed --nobanner /usr/bin/ss-* \
            | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
            | sort -u) \
+      && mkdir -p /etc/shadowsocks-libev \
       && wget --no-check-certificate -O /etc/shadowsocks-libev/config.json https://raw.githubusercontent.com/xzl2021/shadowsocks_libev-obfs-nginx/master/files/config.json \
       && wget --no-check-certificate -O /etc/nginx/conf.d/obfs.conf https://raw.githubusercontent.com/xzl2021/shadowsocks_libev-obfs-nginx/master/files/obfs_nginx.conf \
       && wget --no-check-certificate -O /usr/local/bin/obfs-server https://raw.githubusercontent.com/xzl2021/shadowsocks_libev-obfs-nginx/master/files/obfs-server \
