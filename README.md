@@ -1,2 +1,2 @@
-# shadowsocks_libev-obfs-nginx
+# docker-sslibev-obfs-nginx
 Docker build scripts.
