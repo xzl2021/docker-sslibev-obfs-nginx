@@ -2,8 +2,8 @@
 # Dockerfile for shadowsocks-libev
 #
 
-FROM alpine
-LABEL maintainer="kev <noreply@datageek.info>, Sah <contact@leesah.name>"
+FROM alpine:latest
+LABEL maintainer="kev <noreply@datageek.info>, Sah <contact@leesah.name>, xzl2021 <xzl2021#hotmail.com>"
 
 WORKDIR /
 RUN set -ex \
