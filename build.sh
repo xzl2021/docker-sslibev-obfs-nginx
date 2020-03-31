@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t xzl2021/sslibev-obfs-nginx:latest .
+docker build -t sslibev-obfs-nginx:latest .
