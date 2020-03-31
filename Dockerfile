@@ -41,14 +41,14 @@ RUN set -ex \
            | sort -u) \
       && mkdir -p /files \
       && wget --no-check-certificate -O /files/config.json https://raw.githubusercontent.com/xzl2021/docker-sslibev-obfs-nginx/master/files/config.json \
-      && wget --no-check-certificate -O /files/start.sh https://raw.githubusercontent.com/xzl2021/docker-sslibev-obfs-nginx/master/files/start.sh \
+      && wget --no-check-certificate -O /usr/local/bin/ss-libev https://raw.githubusercontent.com/xzl2021/docker-sslibev-obfs-nginx/master/files/start.sh \
       && wget --no-check-certificate -O /etc/nginx/conf.d/obfs.conf https://raw.githubusercontent.com/xzl2021/docker-sslibev-obfs-nginx/master/files/obfs_nginx.conf \
       && wget --no-check-certificate -O /usr/local/bin/obfs-server https://raw.githubusercontent.com/xzl2021/docker-sslibev-obfs-nginx/master/files/obfs-server \
-      && chmod +x /usr/local/bin/obfs-server /files/start.sh \
+      && chmod +x /usr/local/bin/obfs-server /usr/local/bin/ss-libev \
       && cd / \
       && rm -rf /tmp/*
 
 VOLUME /etc/shadowsocks-libev
 ENV TZ=Asia/Shanghai
 
-CMD ["/files/start.sh"]
+CMD ["ss-libev"]
